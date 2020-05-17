@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +25,7 @@ final activityFeedReference = Firestore.instance.collection("feed");
 final commentsReference = Firestore.instance.collection("comments");
 final followersReference = Firestore.instance.collection("follower");
 final followingReference = Firestore.instance.collection("following");
+final timelineReference = Firestore.instance.collection("timeline");
 
 final DateTime time = DateTime.now();
 
@@ -38,7 +42,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
   static User currentUserForUploadPage;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -48,6 +53,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.black,
@@ -265,6 +271,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Future checkAuth(BuildContext context) async {
     FirebaseUser user = await _auth.currentUser();
     if (user != null) {
+      configureRealTimePushNotification();
       print("Already singed-in with");
       await saveUserInfoToFireStore();
       Navigator.pushReplacement(
@@ -275,6 +282,40 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     storageReference: storageReference,
                   )));
     }
+  }
+
+  configureRealTimePushNotification() async {
+    final FirebaseUser user = await _auth.currentUser();
+    if (Platform.isIOS) {
+      getIOSPermissions();
+    }
+    _firebaseMessaging.getToken().then((token) {
+      userReferences
+          .document(user.uid)
+          .updateData({"androidNotificationToken": token});
+    });
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> msg) async {
+      final String recipientId = msg["data"]["recipient"];
+      final String body = msg["notification"]["body"];
+      if (recipientId == user.uid) {
+        SnackBar snackBar = SnackBar(
+          backgroundColor: Colors.grey,
+          content: Text(
+            body,
+            style: TextStyle(color: Colors.black),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
+    });
+  }
+
+  getIOSPermissions() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(alert: true, badge: true, sound: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((settings) => {print("Setting Registered: $settings")});
   }
 
   saveUserInfoToFireStore() async {
@@ -293,6 +334,11 @@ class _MyLoginPageState extends State<MyLoginPage> {
         "bio": "",
         "timestamp": time
       });
+      await followersReference
+          .document(currentUser.id)
+          .collection("userFollowers")
+          .document(currentUser.id)
+          .setData({});
       documentSnapshot = await userReferences.document(user.uid).get();
     }
     currentUser = User.fromDocument(documentSnapshot);

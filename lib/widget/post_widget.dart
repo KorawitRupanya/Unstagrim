@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:wangpawa/model/user.dart';
 import 'package:wangpawa/page/comment_page.dart';
 import 'package:wangpawa/page/login_page.dart';
+import 'package:wangpawa/page/profile_page.dart';
 
 class Post extends StatefulWidget {
   final String postId;
@@ -120,7 +121,7 @@ class _PostState extends State<Post> {
             backgroundColor: Colors.yellowAccent,
           ),
           title: GestureDetector(
-            onTap: () => "Show profile",
+            onTap: () => displayUserProfile(context, userProfileId: user.id),
             child: Text(
               user.username,
               style:
@@ -137,11 +138,92 @@ class _PostState extends State<Post> {
                     Icons.more_vert,
                     color: Colors.white,
                   ),
-                  onPressed: () => print("deleted"),
+                  onPressed: () => controlPostDeleted(context),
                 )
               : Text(""),
         );
       },
+    );
+  }
+
+  controlPostDeleted(BuildContext mContext) {
+    return showDialog(
+      context: mContext,
+      builder: (context) {
+        return SimpleDialog(
+          backgroundColor: Colors.black,
+          title: Text(
+            "What do you want?",
+            style: TextStyle(color: Colors.white),
+          ),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text(
+                "Delete",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                removeUserPost();
+              },
+            ),
+            SimpleDialogOption(
+              child: Text(
+                "Cancle",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  removeUserPost() async {
+    postReferences
+        .document(ownerId)
+        .collection("usersPosts")
+        .document(postId)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+    storageReference.child("post_$postId.jpg").delete();
+    QuerySnapshot querySnapshot = await activityFeedReference
+        .document(ownerId)
+        .collection("feedItems")
+        .where("postId", isEqualTo: postId)
+        .getDocuments();
+    querySnapshot.documents.forEach((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+
+    QuerySnapshot commentsQuerySnapshot = await commentsReference
+        .document(postId)
+        .collection("comments")
+        .getDocuments();
+    commentsQuerySnapshot.documents.forEach((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+  }
+
+  displayUserProfile(BuildContext context, {String userProfileId}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(
+          userProfileId: userProfileId,
+        ),
+      ),
     );
   }
 
@@ -170,7 +252,7 @@ class _PostState extends State<Post> {
           .document(postId)
           .setData({
         "type": "like",
-        "username": currentUser.id,
+        "username": currentUser.username,
         "timestamp": DateTime.now(),
         "url": url,
         "userProfileImg": currentUser.url

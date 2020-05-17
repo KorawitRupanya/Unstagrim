@@ -14,7 +14,7 @@ description: A basketball community application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,6 +27,7 @@ dependencies:
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^0.16.0
   firebase_storage: ^3.1.5
+  firebase_messaging: ^6.0.15
   cloud_firestore: ^0.12.9+5
   flutter_facebook_login: ^3.0.0
 

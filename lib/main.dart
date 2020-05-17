@@ -2,10 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wangpawa/page/login_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
   runApp(MyApp());
 }
 
