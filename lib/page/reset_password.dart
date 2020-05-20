@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wangpawa/widget/header.dart';
 
 class MyResetPasswordPage extends StatefulWidget {
   MyResetPasswordPage({Key key}) : super(key: key);
@@ -17,39 +18,42 @@ class _MyResetPasswordPageState extends State<MyResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("RESET PASSWORD"),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [const Color(0xFFE0E300), const Color(0xFFFD8A5E)]),
-            ),
-          ),
-        ),
+        appBar:
+            header(context, title: "RESET PASSWORD", notShowBackButton: true),
         body: Container(
             color: Colors.black,
             child: Center(
-              child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(colors: [
-                      const Color(0xFFFD8A5E),
-                      const Color(0xFFEEB92C)
-                    ]),
-                  ),
-                  margin: EdgeInsets.all(32),
-                  padding: EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      buildTextFieldEmail(),
-                      buildButtonSignUp(context)
-                    ],
-                  )),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: Image(
+                        image: AssetImage('assets/images/Logo.png'),
+                      ),
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(colors: [
+                            const Color(0xFFFD8A5E),
+                            const Color(0xFFEEB92C)
+                          ]),
+                        ),
+                        margin: EdgeInsets.all(32),
+                        padding: EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            buildTextFieldEmail(),
+                            buildButtonSignUp(context)
+                          ],
+                        )),
+                  ],
+                ),
+              ),
             )));
   }
 

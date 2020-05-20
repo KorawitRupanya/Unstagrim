@@ -170,7 +170,7 @@ class _PostState extends State<Post> {
             ),
             SimpleDialogOption(
               child: Text(
-                "Cancle",
+                "Cancel",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),

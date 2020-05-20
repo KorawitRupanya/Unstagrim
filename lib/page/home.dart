@@ -5,7 +5,6 @@ import 'package:wangpawa/model/user.dart';
 import 'package:wangpawa/page/notifications_page.dart';
 import 'package:wangpawa/page/profile_page.dart';
 import 'package:wangpawa/page/search_page.dart';
-import 'package:wangpawa/page/time_line_page.dart';
 import 'package:wangpawa/page/upload_page.dart';
 
 import 'login_page.dart';
@@ -50,13 +49,13 @@ class _MyHomePageState extends State<MyHomePage> {
               curve: Curves.easeInOut);
         },
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+//          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
           BottomNavigationBarItem(
               icon: Icon(Icons.search), title: Text("Search")),
           BottomNavigationBarItem(
               icon: Icon(Icons.camera_alt), title: Text("Upload")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people), title: Text("Profile")),
+              icon: Icon(Icons.person), title: Text("Profile")),
         ],
       ),
       body: PageView(
@@ -67,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
         children: <Widget>[
-          TimeLinePage(currentUser: currentUser),
+//          TimeLinePage(currentUser: currentUser),
           SearchPage(),
           UploadPage(currentUser: currentUser),
           ProfilePage(userProfileId: currentUser.id)

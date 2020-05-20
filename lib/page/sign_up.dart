@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:wangpawa/widget/header.dart';
 
 class MySignUpPage extends StatefulWidget {
   MySignUpPage({Key key}) : super(key: key);
@@ -19,18 +20,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("SIGN UP"),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [const Color(0xFFE0E300), const Color(0xFFFD8A5E)]),
-            ),
-          ),
-        ),
+        appBar: header(context, title: "SIGN UP", notShowBackButton: true),
         body: Container(
             color: Colors.black,
             child: Center(

@@ -69,7 +69,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       key: _scaffoldKey,
-      appBar: header(context, AppTitle: true),
+      appBar: header(context, appTitle: true),
       body: RefreshIndicator(
         child: createUserTimeLine(),
         onRefresh: () => retrieveTimeline(),

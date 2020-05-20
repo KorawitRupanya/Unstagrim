@@ -5,10 +5,10 @@ import 'package:wangpawa/page/login_page.dart';
 FirebaseAuth _auth = FirebaseAuth.instance;
 
 Widget header(context,
-    {bool AppTitle = false, String title, notShowBackButton = false}) {
+    {bool appTitle = false, String title, notShowBackButton = false}) {
   return AppBar(
     title: Text(
-      AppTitle ? "WangPaWa" : title,
+      appTitle ? "WangPaWa" : title,
       style: TextStyle(
           fontFamily: 'Sportsquake', fontSize: 35.0, color: Colors.white),
     ),

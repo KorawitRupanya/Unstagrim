@@ -135,6 +135,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       key: _scaffoldGlobalKey,
       appBar: AppBar(
         backgroundColor: Colors.black,

@@ -44,6 +44,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
   TextEditingController passwordController = TextEditingController();
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final Shader linearGradient = LinearGradient(
+    colors: <Color>[Colors.white, Colors.black],
+  ).createShader(Rect.fromLTWH(0.0, 0.0, 800.0, 700.0));
   @override
   void initState() {
     super.initState();
@@ -61,8 +64,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
           child: Center(
             child: Column(
               children: <Widget>[
-                Image(
-                  image: AssetImage('assets/images/WangPaWa.png'),
+                Text(
+                  "Unstagrim",
+                  style: TextStyle(
+                      fontFamily: 'Sportsquake',
+                      fontSize: 60.0,
+                      foreground: Paint()..shader = linearGradient),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -86,7 +93,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(30.0),
+                        padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
                           "OR",
                           style: TextStyle(
@@ -106,8 +113,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       child: Padding(
                           padding: EdgeInsets.only(bottom: 10.0),
                           child: Image(
-                            image:
-                                AssetImage('assets/images/BasketballCourt.png'),
+                            image: AssetImage('assets/images/footer.png'),
                           ))),
                 ),
               ],

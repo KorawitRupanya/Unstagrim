@@ -81,51 +81,86 @@ class _ProfilePageState extends State<ProfilePage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: 45.0,
-                    backgroundColor: Colors.orangeAccent,
-                    backgroundImage: CachedNetworkImageProvider(user.url),
-                  ),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            createColumn("Posts", countPost),
-                            createColumn("Followers", countTotalFollowers),
-                            createColumn("Following", countTotalFollowings),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: <Color>[
+                            const Color(0xFFE0E300),
+                            const Color(0xFFFD8A5E)
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[createButton()],
-                        )
-                      ],
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+//                          Container(
+//                            alignment: Alignment.centerLeft,
+//                            padding: EdgeInsets.only(top: 13.0),
+//                            child: Text(user.username,
+//                                style: TextStyle(
+//                                    fontSize: 20.0, color: Colors.white)),
+//                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 15.0, bottom: 5.0),
+                            child: CircleAvatar(
+                              radius: 45.0,
+                              backgroundColor: Colors.orangeAccent,
+                              backgroundImage:
+                                  CachedNetworkImageProvider(user.url),
+                            ),
+                          ),
+                          Divider(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 110.0),
+                            child: Center(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(top: 5.0),
+                                child: Text(user.profileName,
+                                    style: TextStyle(
+                                        fontSize: 24.0, color: Colors.white)),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 55.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                              child: Text(user.bio,
+                                  style: TextStyle(
+                                      fontSize: 16.0, color: Colors.white)),
+                            ),
+                          ),
+                          Divider(),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 15.0, top: 5.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                createColumn("Posts", countPost),
+                                createColumn("Followers", countTotalFollowers),
+                                createColumn("Following", countTotalFollowings),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[createButton()],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(top: 13.0),
-                child: Text(user.username,
-                    style: TextStyle(fontSize: 14.0, color: Colors.white)),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(top: 5.0),
-                child: Text(user.profileName,
-                    style: TextStyle(fontSize: 18.0, color: Colors.white)),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(top: 3.0),
-                child: Text(user.bio,
-                    style: TextStyle(fontSize: 18.0, color: Colors.white70)),
-              )
             ],
           ),
         );
@@ -206,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
       "type": "follow",
       "ownerId": widget.userProfileId,
       "username": currentUser.username,
-      "timestamp":DateTime.now(),
+      "timestamp": DateTime.now(),
       "userProfile": currentUser.url,
       "userId": currentOnlineUserId,
     });
@@ -215,23 +250,25 @@ class _ProfilePageState extends State<ProfilePage> {
   Container createButtonTitleAndFunction(
       {String title, Function performFunction}) {
     return Container(
-      padding: EdgeInsets.only(top: 3.0),
+      padding: EdgeInsets.all(15.0),
       child: FlatButton(
         onPressed: performFunction,
         child: Container(
-          width: 245,
-          height: 26.0,
+          width: 200,
+          height: 40.0,
           child: Text(
             title,
             style: TextStyle(
-                color: following ? Colors.grey : Colors.white70,
+                color: following ? Colors.grey : Colors.white,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           ),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: following ? Colors.black : Colors.white70,
-            border: Border.all(color: following ? Colors.grey : Colors.grey),
-            borderRadius: BorderRadius.circular(6.0),
+            color: following ? Colors.black : Colors.deepOrange,
+            border:
+                Border.all(color: following ? Colors.grey : Colors.deepOrange),
+            borderRadius: BorderRadius.circular(25.0),
           ),
         ),
       ),
@@ -264,7 +301,7 @@ class _ProfilePageState extends State<ProfilePage> {
             title,
             style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.grey,
+                color: Colors.white,
                 fontWeight: FontWeight.w400),
           ),
         )
